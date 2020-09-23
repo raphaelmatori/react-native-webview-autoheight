@@ -15,14 +15,14 @@ import React, { Component } from 'react';
 import {
   View,
   Dimensions,
-  WebView,
   Platform,
 } from 'react-native';
+import { WebView } from 'react-native-webview';
 import PropTypes from "prop-types";
 
-const injectedScript = function() {
+const injectedScript = function () {
   function waitForBridge() {
-    if (window.postMessage.length !== 1){
+    if (window.postMessage.length !== 1) {
       setTimeout(waitForBridge, 200);
     }
     else {
@@ -45,10 +45,10 @@ export default class MyWebView extends Component {
 
   static defaultProps = {
     autoHeight: true,
-    onMessage: () => {}
+    onMessage: () => { }
   };
 
-  constructor (props: Object) {
+  constructor(props: Object) {
     super(props);
     this.state = {
       webViewHeight: this.props.defaultHeight
@@ -73,11 +73,11 @@ export default class MyWebView extends Component {
     this.webview.reload();
   }
 
-  render () {
+  render() {
     const _w = this.props.width || Dimensions.get('window').width;
     const _h = this.props.autoHeight ? this.state.webViewHeight : this.props.defaultHeight;
     const androidScript = 'window.postMessage = String(Object.hasOwnProperty).replace(\'hasOwnProperty\', \'postMessage\');' +
-    '(' + String(injectedScript) + ')();';
+      '(' + String(injectedScript) + ')();';
     const iosScript = '(' + String(injectedScript) + ')();' + 'window.postMessage = String(Object.hasOwnProperty).replace(\'hasOwnProperty\', \'postMessage\');';
     return (
       <WebView
@@ -87,8 +87,8 @@ export default class MyWebView extends Component {
         javaScriptEnabled={true}
         automaticallyAdjustContentInsets={true}
         {...this.props}
-	onMessage={this._onMessage}
-	style={[{ width: _w }, this.props.style, { height: _h }]}
+        onMessage={this._onMessage}
+        style={[{ width: _w }, this.props.style, { height: _h }]}
       />
     )
   }
